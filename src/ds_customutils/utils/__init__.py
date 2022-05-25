@@ -3,6 +3,7 @@ import random
 from collections.abc import MutableMapping
 
 import numpy as np
+import requests
 import torch
 
 
@@ -39,3 +40,16 @@ def set_seed(seed=42):
     torch.backends.cudnn.benchmark = False
     # Set a fixed value for the hash seed
     os.environ["PYTHONHASHSEED"] = str(seed)
+
+
+def send_line_notify(notification_message: str, token: str) -> None:
+    """LINE Notification function
+
+    Args:
+        notification_message (str): message content
+        token (str): token for line notify
+    """
+    line_notify_api = 'https://notify-api.line.me/api/notify'
+    headers = {'Authorization': f'Bearer {token}'}
+    data = {'message': f'message: {notification_message}'}
+    requests.post(line_notify_api, headers=headers, data=data)
